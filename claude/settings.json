@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
+    "CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE": "0",
+    "DISABLE_TELEMETRY": "1",
+    "DO_NOT_TRACK": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "ENABLE_TOOL_SEARCH": "true",
+    "CLAUDE_CODE_DISABLE_EXPLORE_INHERIT_CAP": "1",
+    "CLAUDE_CODE_AUTO_MODE_SERVER": "0",
+    "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference"
+  },
+  "includeGitInstructions": false,
+  "permissions": {
+    "allow": [],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "plan"
+  },
+  "model": "glm-latest[1m]",
+  "modelPicker": {
+    "options": [
+      {
+        "model": "kimi-latest[1m]",
+        "label": "Kimi (Latest)",
+        "description": "Fireworks serverless · $3/$15 per Mtok"
+      },
+      {
+        "model": "glm-latest[1m]",
+        "label": "GLM (Latest)",
+        "description": "Fireworks serverless · $1.4/$4.4 per Mtok"
+      },
+      {
+        "model": "deepseek-flash-latest[1m]",
+        "label": "DeepSeek Flash (Latest)",
+        "description": "Fireworks serverless · $0.30/$1.20 per Mtok"
+      }
+    ],
+    "replaceBuiltInOptions": true
+  },
+  "disableClaudeAiConnectors": true,
+  "disableRemoteControl": true,
+  "disableWorkflows": true,
+  "disableArtifact": true,
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "chrome-devtools-mcp@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "microsoft-docs@claude-plugins-official": true
+  },
+  "sandbox": {
+    "enabled": false
+  },
+  "feedbackSurveyRate": 0,
+  "spinnerTipsEnabled": false,
+  "effortLevel": "high",
+  "modelSettings": {
+    "glm-latest": {
+      "effortLevel": "high"
+    },
+    "kimi-latest": {
+      "effortLevel": "high"
+    }
+  },
+  "emojiCompletionEnabled": false,
+  "awaySummaryEnabled": false,
+  "autoUpdatesChannel": "stable",
+  "tui": "fullscreen",
+  "voice": {
+    "enabled": false
+  },
+  "theme": "auto",
+  "editorMode": "vim",
+  "preferredNotifChannel": "notifications_disabled",
+  "showTurnDuration": false,
+  "terminalProgressBarEnabled": false,
+  "disableDeepLinkRegistration": "disable",
+  "autoInstallIdeExtension": false,
+  "permissionExplainerEnabled": false
+}

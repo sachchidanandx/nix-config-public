@@ -1,0 +1,9 @@
+# Only settings.json and prompts/ are linked into ~/.pi/agent (see
+# home.nix); runtime state stays there. These guard against copying it in.
+agent/auth.json
+agent/sessions/
+agent/models-store.json
+agent/trust.json
+*.sock
+*.sock.meta
+*.log

@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@1.9.0"],
+      "description": "Chrome DevTools: drive and debug a real Chrome instance (navigate, snapshot, click/type, console, network, performance)"
+    },
+    "atlassian": {
+      "url": "https://mcp.atlassian.com/v2/mcp",
+      "description": "Atlassian (Rovo): search, read and create Jira issues and Confluence pages on your Atlassian site",
+      "oauth": {
+        "callbackUrl": "http://localhost/callback"
+      }
+    },
+    "slack": {
+      "url": "https://mcp.slack.com/mcp",
+      "description": "Slack: search, read, and post messages on your Slack workspace",
+      "oauth": {
+        "clientId": "1601185624273.8899143856786",
+        "callbackUrl": "http://localhost:3118/callback"
+      }
+    }
+  }
+}

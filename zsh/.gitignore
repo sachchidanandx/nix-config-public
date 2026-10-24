@@ -1,0 +1,8 @@
+secrets.zsh
+.zcompdump*
+.zsh_sessions/
+.zcompcache
+.DS_Store
+.brew_cache
+.zsh_history
+

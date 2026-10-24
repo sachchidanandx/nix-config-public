@@ -1,0 +1,51 @@
+k9s:
+  liveViewAutoRefresh: false
+  gpuVendors: {}
+  screenDumpDir: "/tmp/k9s" # Directory for saved manifests and describe dumps
+  refreshRate: 2 # UI poll interval in seconds (default: 2)
+  apiServerTimeout: 15s # API server request timeout
+  maxConnRetry: 5 # Connection retries to the Kubernetes API server
+  readOnly: false
+  noExitOnCtrlC: false # Requires typing :quit to exit instead of Ctrl+C
+  portForwardAddress: localhost
+  ui:
+    enableMouse: true
+    headless: true
+    logoless: true
+    crumbsless: true
+    splashless: false
+    reactive: true
+    noIcons: false
+    invert: false
+    defaultsToFullScreen: true
+    useFullGVRTitle: true
+    skin: catppuccin-mocha-transparent
+  skipLatestRevCheck: false
+  disablePodCounting: false
+  shellPod:
+    image: busybox:1.37.0
+    namespace: default
+    limits:
+      cpu: 100m
+      memory: 100Mi
+  imageScans:
+    enable: false
+    exclusions:
+      namespaces: []
+      labels: {}
+  logger:
+    tail: 100
+    buffer: 5000
+    sinceSeconds: -1
+    textWrap: false
+    disableAutoscroll: false
+    columnLock: false
+    showTime: true
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70
+  defaultView: "pods" # View displayed upon launch (default: "")

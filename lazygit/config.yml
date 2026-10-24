@@ -1,0 +1,247 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+# =============================================================================
+# lazygit configuration
+# -----------------------------------------------------------------------------
+# Location: ~/.config/lazygit/config.yml
+#   Symlinked from ~/nix-config/lazygit by home-manager (see home.nix), so
+#   edits here apply immediately without a rebuild.
+#
+# Docs: https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+# Theme: Catppuccin Mocha (mauve accent)
+#   https://github.com/catppuccin/lazygit (themes/mocha/mauve.yml)
+# =============================================================================
+
+# ============================ UI / APPEARANCE =================================
+gui:
+  # ---------------------------------------------------------------------------
+  # Catppuccin Mocha theme (official port, "mauve" accent flavor)
+  # Swap the accent by taking values from themes/mocha/<accent>.yml in the
+  # catppuccin/lazygit repo (e.g. blue, green, peach...).
+  # ---------------------------------------------------------------------------
+  theme:
+    activeBorderColor:
+      - "#cba6f7" # mauve
+      - bold
+    inactiveBorderColor:
+      - "#a6adc8" # subtext0
+    searchingActiveBorderColor:
+      - "#f9e2af" # yellow
+    optionsTextColor:
+      - "#89b4fa" # blue
+    selectedLineBgColor:
+      - "#313244" # surface0
+    inactiveViewSelectedLineBgColor:
+      - "#6c7086" # overlay2
+    cherryPickedCommitFgColor:
+      - "#cba6f7" # mauve
+    cherryPickedCommitBgColor:
+      - "#45475a" # surface1
+    markedBaseCommitFgColor:
+      - "#89b4fa" # blue
+    markedBaseCommitBgColor:
+      - "#f9e2af" # yellow
+    unstagedChangesColor:
+      - "#f38ba8" # red
+    defaultFgColor:
+      - "#cdd6f4" # text
+
+  # Color of author names in the commit graph ('*' = all authors)
+  authorColors:
+    "*": "#b4befe" # lavender
+
+  # Nerd Font icons ('' disables icons entirely)
+  nerdFontsVersion: "3"
+  showFileIcons: true
+
+  border: rounded # rounded | single | double | hidden | bold
+  screenMode: normal # normal | half | full  ('+' / '_' to toggle at runtime)
+
+  # Files panel as a tree instead of a flat list (toggle at runtime with '`')
+  showFileTree: true
+  showRootItemInFileTree: true
+
+  # Fuzzy matching when filtering with '/'
+  filterMode: fuzzy
+
+  # Show lines-changed numbers per file in the Files view
+  showNumstatInFilesView: true
+
+  # Show how far each branch has diverged from the base branch
+  showDivergenceFromBaseBranch: arrowAndNumber
+
+  # Slightly taller focused side panel (accordion effect)
+  expandFocusedSidePanel: true
+  expandedSidePanelWeight: 2
+
+  # Show commit hashes next to branch names
+  showBranchCommitHash: true
+
+  scrollHeight: 2 # lines scrolled per scroll action in the main view
+  scrollPastBottom: true
+  scrollOffMargin: 2
+  scrollOffBehavior: margin # margin | jump
+
+  mouseEvents: true
+  showListFooter: true # '5 of 20' footer in list views
+  showRandomTip: false
+  showCommandLog: true
+  showBottomLine: true
+  showPanelJumps: true
+
+  commitLength:
+    show: true # commit message length indicator while committing
+
+  timeFormat: 02 Jan 06 # Go time format
+  shortTimeFormat: 3:04PM
+
+# ============================== GIT BEHAVIOR ==================================
+git:
+  commit:
+    signOff: false
+    autoWrapCommitMessage: true
+    autoWrapWidth: 72
+
+  merging:
+    manualCommit: false
+    args: ""
+    squashMergeMessage: Squash merge {{selectedRef}} into {{currentBranch}}
+
+  mainBranches: [master, main]
+  skipHookPrefix: WIP
+
+  autoFetch: true # periodically `git fetch`
+  fetchAll: true # fetch with --all
+  autoRefresh: true # periodically refresh files/submodules
+  autoDetectExternalChanges: true # pick up commits/checkouts made outside lazygit
+  autoForwardBranches: onlyMainBranches
+  autoStageResolvedConflicts: true
+
+  # Render :rocket: style emoji codes in commit messages
+  parseEmoji: true
+
+  log:
+    order: topo-order # readable commit graph
+    showGraph: always # always | never | when-maximised
+    showWholeGraph: false
+
+  localBranchSortOrder: recency # date | recency | alphabetical
+  remoteBranchSortOrder: date
+
+  diffContextSize: 3 # change with { / }
+  renameSimilarityThreshold: 50 # change with ( / )
+  ignoreWhitespaceInDiffView: false # toggle with <ctrl+w>
+
+  truncateCopiedCommitHashesTo: 12
+
+  # External diff renderer. `delta` is not installed; if you install it
+  # (add `delta` to home.packages in home.nix) uncomment the following for
+  # side-by-side diffs:
+  # diffRenderers:
+  #   - name: delta
+  #     type: stdinFilter
+  #     colorArg: always
+  #     command: delta --dark --paging=never --line-numbers --side-by-side
+
+# ============================ EDITOR / SHELL ==================================
+os:
+  # Baseline preset; every template below is overridden explicitly.
+  # Crucially, the preset's dynamic `suspend` behavior still applies:
+  # lazygit only suspends itself when NOT running inside neovim.
+  editPreset: nvim-remote
+
+  # --- Inside neovim (lazygit opened via <leader>gg) -------------------------
+  # $NVIM is set, so we talk to the parent neovim over RPC:
+  #   1. <C-\><C-N>  leave terminal mode in the lazygit float
+  #   2. :close!     hide the lazygit float (the terminal buffer stays alive,
+  #                  so <leader>gg instantly re-opens the same lazygit session)
+  #   3. :edit ...   open the file as a normal buffer in the previous window
+  # Note: lazygit substitutes {{filename}} as an ABSOLUTE, shell-quoted path,
+  # so it must be used as-is (no $(pwd) prefix, no extra quoting).
+  #
+  # --- Outside neovim ---------------------------------------------------------
+  # Plain blocking `nvim` invocation; lazygit suspends (preset behavior) and
+  # resumes when you quit nvim.
+  edit: >-
+    [ -z "$NVIM" ] && (nvim -- {{filename}})
+    || (nvim --server "$NVIM" --remote-send "<C-\><C-N>:close!<CR>:edit {{filename}}<CR>")
+
+  editAtLine: >-
+    [ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}})
+    || (nvim --server "$NVIM" --remote-send "<C-\><C-N>:close!<CR>:edit +{{line}} {{filename}}<CR>")
+
+  # Used when lazygit must wait for the editor to close before continuing.
+  # Always blocks in lazygit's own terminal (no remote-wait support in neovim
+  # yet: https://github.com/neovim/neovim/pull/17856)
+  editAtLineAndWait: nvim +{{line}} -- {{filename}}
+
+  # 'o' (openFile): same behavior as 'e'. This is a headless VM with no
+  # xdg-open, so outside neovim it also just opens the file in nvim.
+  open: >-
+    [ -z "$NVIM" ] && (nvim -- {{filename}})
+    || (nvim --server "$NVIM" --remote-send "<C-\><C-N>:close!<CR>:edit {{filename}}<CR>")
+
+  # Opening a directory (e.g. from the worktrees panel)
+  openDirInEditor: >-
+    [ -z "$NVIM" ] && (nvim -- {{dir}})
+    || (nvim --server "$NVIM" --remote-send "<C-\><C-N>:close!<CR>:edit {{dir}}<CR>")
+
+  # <ctrl+o> (universal copy-to-clipboard: branch name in the branches
+  # panel, commit hash in commits, file path in files, ...).
+  # This headless VM has no xclip/xsel and no DISPLAY/WAYLAND_DISPLAY, so
+  # lazygit's built-in clipboard errors out. Route through tmux instead:
+  # `load-buffer -w -` fills tmux's paste buffer AND forwards OSC52 to the
+  # client terminal (tmux.conf already sets allow-passthrough on and
+  # set-clipboard on), so the text lands on the local machine's clipboard.
+  # Works inside the nvim lazygit float too ($TMUX is inherited); tmux-yank
+  # then also makes it paste-able with the tmux paste key.
+  # Fallback (no tmux): plain OSC52 to the controlling terminal.
+  copyToClipboardCmd: >
+    if [ -n "$TMUX" ]; then
+      printf '%s' {{text}} | tmux load-buffer -w -
+    else
+      printf "\033]52;c;$(printf '%s' {{text}} | base64 -w 0)\a" > /dev/tty
+    fi
+
+# ============================ REFRESH / UPDATES ===============================
+refresher:
+  refreshInterval: 10 # seconds; files/submodules (git.autoRefresh)
+  fetchInterval: 60 # seconds; git fetch       (git.autoFetch)
+  externalChangeCheckInterval: 2 # seconds; external ref changes
+
+update:
+  method: never # installed via nix (home.nix); don't nag about updates
+  days: 14
+
+# ============================ MISC BEHAVIOR ===================================
+confirmOnQuit: false
+quitOnTopLevelReturn: true # <esc> at the top level quits lazygit
+disableStartupPopups: true
+promptToReturnFromSubprocess: true
+
+# What to do when opened outside a git repo: prompt | create | skip | quit
+notARepository: prompt
+
+# ============================ KEYBINDINGS =====================================
+# Defaults are already vim-flavored (hjkl, d, x, <space>...). Override here.
+# See docs/keybindings/Custom_Keybindings.md
+keybinding:
+  universal:
+    # Quit with q / ctrl+c (both are the defaults; one key per binding),
+    # keep everything else stock
+    quit: q
+    quit-alt1: <c-c>
+
+# ============================ CUSTOM COMMANDS =================================
+# Invoked from within lazygit. Templates support {{filename}} etc.
+# See docs/Custom_Command_Keybindings.md
+customCommands: []
+# Example — amend the last commit with all changes, no message edit:
+# - key: "!"
+#   context: "files"
+#   description: "Amend all changes into last commit"
+#   command: git commit --amend --no-edit
+#   output: terminal
+
+# ============================ SERVICES ========================================
+# Custom PR/issue URLs for self-hosted providers (GitHub works out of the box).
+services: {}

@@ -1,0 +1,44 @@
+# Claude Code internals / ephemeral state
+.claude/
+daemon/
+jobs/
+paste-cache/
+plans/
+plugins/
+downloads/
+file-history/
+sessions/
+session-env/
+shell-snapshots/
+ide/
+cache/
+debug/
+backups/
+projects/
+tasks/
+.cc-writes/
+
+# Generated / runtime data
+history.jsonl
+stats-cache.json
+.last-cleanup
+.last-update-result.json
+daemon.lock
+daemon.log
+daemon.status.json
+mcp-needs-auth-cache.json
+remote-settings.json
+policy-limits.json
+
+# Secrets
+.env
+.credentials.json
+*.credentials.json
+settings.local.json
+.mcp.json
+
+# Logs
+aws-sso-refresh.log
+
+# OS
+.DS_Store

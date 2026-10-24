@@ -1,0 +1,44 @@
+{
+  "shellPath": "/home/sachchidanandk/.nix-profile/bin/zsh",
+  "lastChangelogVersion": "1.4.0",
+  "theme": "light/dark",
+  "defaultProvider": "fireworks",
+  "defaultModel": "accounts/fireworks/models/deepseek-v4p1-flash-1017",
+  "defaultThinkingLevel": "high",
+  "enableInstallTelemetry": false,
+  "defaultProjectTrust": "ask",
+  "defaultTools": ["+codemode"],
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "compaction": {
+    "enabled": true
+  },
+  "enabledModels": [
+    "accounts/fireworks/models/glm-5p3",
+    "accounts/fireworks/models/kimi-k3",
+    "accounts/fireworks/models/deepseek-v4p1-flash-1017"
+  ],
+  "modelThinkingLevels": {
+    "fireworks/accounts/fireworks/models/kimi-k3": "high",
+    "fireworks/accounts/fireworks/models/glm-5p3": "high",
+    "fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017": "high"
+  },
+  "planMode": {
+    "plan": {
+      "model": "fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017",
+      "thinking": "high"
+    },
+    "execute": {
+      "model": "fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017",
+      "thinking": "high"
+    }
+  },
+  "packages": [],
+  "tuiMode": "fullscreen",
+  "fullscreenScrollbar": "hidden",
+  "hideThinkingBlock": true,
+  "warnings": {
+    "anthropicExtraUsage": false
+  }
+}

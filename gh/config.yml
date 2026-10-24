@@ -1,0 +1,97 @@
+# =============================================================================
+# GitHub CLI configuration
+# -----------------------------------------------------------------------------
+# Location: ~/.config/gh/config.yml
+#   Only this file is symlinked from ~/nix-config/gh by home-manager (see
+#   home.nix). hosts.yml (auth state, possibly OAuth tokens) stays unmanaged
+#   and is gitignored.
+#
+# Note: `gh config set` / `gh alias set` write through the symlink (it stays
+# intact) but reformat the file: this header and blank lines are dropped and
+# indentation becomes 4 spaces. Prefer editing it by hand.
+#
+# Docs: https://cli.github.com/manual/gh_config
+# =============================================================================
+
+# The current version of the config schema
+version: 1
+
+# ============================ GENERAL =========================================
+# Protocol for git operations: ssh | https (hosts.yml can override per host)
+git_protocol: ssh
+
+# Editor for issue/PR bodies. Explicit so it doesn't depend on $EDITOR.
+editor: nvim
+
+# Interactive prompts: enabled | disabled (global only)
+prompt: enabled
+
+# Open $EDITOR for prompts instead of inline input: enabled | disabled
+prefer_editor_prompt: disabled
+
+# Blank = $GH_PAGER / $PAGER (less; gh adds LESS=FRX so short output isn't paged)
+pager:
+
+# Blank = $GH_BROWSER / $BROWSER. Left blank on purpose: VS Code remote
+# terminals set $BROWSER to a helper that opens URLs on the local machine,
+# and a value here would override it. Without one, gh just prints the URL.
+browser:
+
+# Unix socket to send HTTP traffic through (blank = direct)
+http_unix_socket:
+
+# Don't send usage telemetry to GitHub: enabled | disabled
+telemetry: disabled
+
+# ============================ APPEARANCE ======================================
+# Render labels in their real hex colors (terminal supports truecolor)
+color_labels: enabled
+
+# Customizable 4-bit accessible colors / screen-reader friendly prompter
+accessible_colors: disabled
+accessible_prompter: disabled
+
+# Animated spinner (disabled = textual progress indicator)
+spinner: enabled
+
+# ============================ ALIASES =========================================
+# `gh <alias>` expands to the command on the right. A leading '!' runs it
+# through the shell ($1, $2... are the alias arguments).
+# See: gh alias --help
+aliases:
+  # --- pull requests --------------------------------------------------------
+  co: pr checkout # gh co 123
+  pv: pr view
+  pvw: pr view --web
+  pd: pr diff
+  pst: pr status
+  pc: pr create --fill # title/body from commits
+  pcd: pr create --fill --draft
+  pcw: pr create --web
+  pm: pr merge --squash --delete-branch
+  checks: pr checks --watch # follow CI on the current branch's PR
+  mine: pr list --author "@me"
+  review: search prs --review-requested=@me --state=open
+
+  # --- issues ----------------------------------------------------------------
+  iv: issue view
+  il: issue list
+  ia: issue list --assignee "@me"
+
+  # --- repos / actions -------------------------------------------------------
+  rv: repo view
+  rvw: repo view --web
+  rc: repo clone
+  runs: run list --limit 10
+  rw: run watch # pick a running workflow and follow it
+
+  # Delete local branches whose PRs were merged (squash-merge safe)
+  prune: >-
+    !git fetch --prune --quiet &&
+    gh pr list --state merged --author "@me" --limit 100
+    --json headRefName --jq '.[].headRefName' |
+    while read -r b; do
+    git show-ref --verify --quiet "refs/heads/$b" &&
+    [ "$b" != "$(git branch --show-current)" ] &&
+    git branch -D "$b";
+    done
